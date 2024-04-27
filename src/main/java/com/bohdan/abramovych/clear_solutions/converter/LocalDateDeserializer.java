@@ -1,11 +1,10 @@
-package com.bohdan.abramovych.clear_solutions.utills;
+package com.bohdan.abramovych.clear_solutions.converter;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import lombok.SneakyThrows;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
