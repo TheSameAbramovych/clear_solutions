@@ -1,4 +1,4 @@
-package com.clear.solutions.task.core.exception;
+package com.bohdan.abramovych.clear_solutions.core.exception;
 
 import org.slf4j.helpers.MessageFormatter;
 

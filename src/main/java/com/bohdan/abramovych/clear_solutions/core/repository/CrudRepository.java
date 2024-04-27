@@ -1,4 +1,4 @@
-package com.clear.solutions.task.core.repository;
+package com.bohdan.abramovych.clear_solutions.core.repository;
 
 import java.util.Optional;
 
@@ -15,7 +15,7 @@ public interface CrudRepository<R, M> {
     /**
      * Retrieves an entity by their unique identifier.
      */
-    Optional<R> getById(String id);
+    Optional<R> getByUserId(String id);
 
     /**
      * Removes an entity from the repository by their unique identifier.

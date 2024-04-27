@@ -1,14 +1,16 @@
-package com.clear.solutions.task.core.repository;
+package com.bohdan.abramovych.clear_solutions.core.repository;
 
-import com.clear.solutions.task.core.repository.model.UserRecord;
-import com.clear.solutions.task.core.service.model.User;
+import com.bohdan.abramovych.clear_solutions.core.service.model.User;
+import com.bohdan.abramovych.clear_solutions.persistence.tables.records.UsersRecord;
 
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * The UserRepository interface defines methods for managing user data.
  */
-public interface UserRepository extends CrudRepository<UserRecord, User> {
-
+public interface UserRepository extends CrudRepository<UsersRecord, User> {
+    Stream<UsersRecord> findByBirthdayRange(LocalDate start, LocalDate end);
 }
 

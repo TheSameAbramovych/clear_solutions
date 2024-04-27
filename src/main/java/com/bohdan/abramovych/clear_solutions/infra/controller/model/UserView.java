@@ -1,4 +1,4 @@
-package com.clear.solutions.task.infra.controller.model;
+package com.bohdan.abramovych.clear_solutions.infra.controller.model;
 
 import lombok.Builder;
 import lombok.Value;

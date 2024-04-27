@@ -1,6 +1,7 @@
-package com.clear.solutions.task.core.service;
+package com.bohdan.abramovych.clear_solutions.core.service;
 
-import com.clear.solutions.task.core.service.model.User;
+
+import com.bohdan.abramovych.clear_solutions.core.service.model.User;
 
 import java.time.LocalDate;
 import java.util.List;

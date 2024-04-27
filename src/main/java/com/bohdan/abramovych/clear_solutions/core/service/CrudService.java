@@ -1,4 +1,4 @@
-package com.clear.solutions.task.core.service;
+package com.bohdan.abramovych.clear_solutions.core.service;
 
 /**
  * The CrudService interface defines basic CRUD (Create, Read, Update, Delete) operations for entities of type T.

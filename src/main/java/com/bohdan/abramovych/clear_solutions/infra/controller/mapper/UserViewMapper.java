@@ -1,13 +1,13 @@
-package com.clear.solutions.task.infra.controller.mapper;
+package com.bohdan.abramovych.clear_solutions.infra.controller.mapper;
 
-import com.clear.solutions.task.core.service.model.User;
-import com.clear.solutions.task.infra.controller.model.UserView;
+import com.bohdan.abramovych.clear_solutions.core.service.model.User;
+import com.bohdan.abramovych.clear_solutions.infra.controller.model.UserView;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
+import org.mapstruct.NullValueCheckStrategy;
 import java.util.List;
 
-@Mapper
+@Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, componentModel = "spring")
 public interface UserViewMapper {
 
     List<UserView> toUserViews(List<User> user);

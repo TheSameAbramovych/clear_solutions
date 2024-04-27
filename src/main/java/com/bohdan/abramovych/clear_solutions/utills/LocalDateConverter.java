@@ -1,4 +1,4 @@
-package com.bohdan.abramovych.clear_solutions.service;
+package com.bohdan.abramovych.clear_solutions.utills;
 
 import lombok.NonNull;
 import org.springframework.core.convert.converter.Converter;

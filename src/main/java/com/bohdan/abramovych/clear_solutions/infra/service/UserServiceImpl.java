@@ -1,26 +1,28 @@
-package com.clear.solutions.task.infra.service;
+package com.bohdan.abramovych.clear_solutions.infra.service;
 
-import com.clear.solutions.task.core.exception.NotFoundException;
-import com.clear.solutions.task.core.repository.AddressRepository;
-import com.clear.solutions.task.core.repository.UserRepository;
-import com.clear.solutions.task.core.repository.model.AddressRecord;
-import com.clear.solutions.task.core.repository.model.UserRecord;
-import com.clear.solutions.task.core.service.UserService;
-import com.clear.solutions.task.core.service.mapper.AddressMapper;
-import com.clear.solutions.task.core.service.mapper.UserMapper;
-import com.clear.solutions.task.core.service.model.Address;
-import com.clear.solutions.task.core.service.model.User;
+import com.bohdan.abramovych.clear_solutions.core.exception.AgeCheckerException;
+import com.bohdan.abramovych.clear_solutions.core.exception.NotFoundException;
+import com.bohdan.abramovych.clear_solutions.core.repository.AddressRepository;
+import com.bohdan.abramovych.clear_solutions.core.repository.UserRepository;
+import com.bohdan.abramovych.clear_solutions.core.service.UserService;
+import com.bohdan.abramovych.clear_solutions.core.service.mapper.AddressMapper;
+import com.bohdan.abramovych.clear_solutions.core.service.mapper.UserMapper;
+import com.bohdan.abramovych.clear_solutions.core.service.model.Address;
+import com.bohdan.abramovych.clear_solutions.core.service.model.User;
+import com.bohdan.abramovych.clear_solutions.persistence.tables.records.AddressRecord;
+import com.bohdan.abramovych.clear_solutions.persistence.tables.records.UsersRecord;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -34,16 +36,20 @@ public class UserServiceImpl implements UserService {
     AddressRepository addressRepository;
 
     @NonFinal
-    @Value("${user.ageOfMajority}")
+    @Value("${user.ageOfMajority:18}")
     int ageOfMajority;
 
     @Override
     public User store(User user) {
         log.debug("Store new user: {}", user);
 
-        //TODO check if user enough age and throw exception
+        Period age = Period.between(user.getBirthday(), LocalDate.now());
+        if (age.getYears() < ageOfMajority) {
+            log.error("Age of user:{} less 18, cant store", user);
+            throw new AgeCheckerException();
+        }
 
-        UserRecord userRecord = userRepository.upsert(user);
+        UsersRecord userRecord = userRepository.upsert(user);
 
         Address address = addressMapper.toAddress(user.getAddress(), userRecord.getId());
         AddressRecord addressRecord = addressRepository.upsert(address);
@@ -56,18 +62,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(User entity) {
-        //TODO implement update.
-        throw new NotImplementedException("update is not yet implemented");
+        return store(entity);
     }
 
     @Override
     public User get(String id) {
         log.debug("Getting user by id: {}", id);
 
-        UserRecord userRecord = userRepository.getById(id)
-                .orElseThrow(() -> new NotFoundException("User not found by id {}", id));
-        AddressRecord addressRecord = addressRepository.getById(id)
-                .orElse(null);
+        UsersRecord userRecord = userRepository.getByUserId(id)
+            .orElseThrow(() -> new NotFoundException("User not found by id {}", id));
+        AddressRecord addressRecord = addressRepository.getByUserId(id)
+            .orElse(null);
         User user = userMapper.toUser(userRecord, addressRecord);
 
         log.debug("Got user {} by id: {}", user, id);
@@ -76,13 +81,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User remove(String id) {
-        //TODO implement remove.
-        throw new NotImplementedException("remove search is not yet implemented");
+        Optional<UsersRecord> remove = userRepository.remove(id);
+
+        if (remove.isPresent()) {
+            log.debug("User {} was removed", id);
+            return userMapper.toUser(remove.get(), new AddressRecord());
+        } else {
+            log.debug("User {} not found", id);
+            return null;
+        }
     }
 
     @Override
     public List<User> findByBirthdayRange(LocalDate start, LocalDate end) {
-        //TODO implement findByBirthdayRange.
-        throw new NotImplementedException("birthday search is not yet implemented");
+        log.debug("Getting List<User> by birthday range");
+        return userRepository.findByBirthdayRange(start, end)
+            .map(usersRecord ->
+                userMapper.toUser(usersRecord, addressRepository.getByUserId(usersRecord.getId()).orElse(null)))
+            .toList();
     }
 }

@@ -1,7 +1,7 @@
-package com.clear.solutions.task.infra;
+package com.bohdan.abramovych.clear_solutions.infra;
 
-import com.clear.solutions.task.core.exception.ApiException;
-import com.clear.solutions.task.core.exception.NotFoundException;
+import com.bohdan.abramovych.clear_solutions.core.exception.ApiException;
+import com.bohdan.abramovych.clear_solutions.core.exception.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

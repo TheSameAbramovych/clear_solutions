@@ -1,8 +1,8 @@
-package com.clear.solutions.task.core.repository;
+package com.bohdan.abramovych.clear_solutions.core.repository;
 
-import com.clear.solutions.task.core.repository.model.AddressRecord;
-import com.clear.solutions.task.core.repository.model.UserRecord;
-import com.clear.solutions.task.core.service.model.Address;
+
+import com.bohdan.abramovych.clear_solutions.core.service.model.Address;
+import com.bohdan.abramovych.clear_solutions.persistence.tables.records.AddressRecord;
 
 /**
  * The AddressRepository interface defines methods for managing address data.

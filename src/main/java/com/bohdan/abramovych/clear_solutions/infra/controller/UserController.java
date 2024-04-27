@@ -1,23 +1,23 @@
-package com.clear.solutions.task.infra.controller;
+package com.bohdan.abramovych.clear_solutions.infra.controller;
 
-import com.clear.solutions.task.core.service.UserService;
-import com.clear.solutions.task.core.service.model.User;
-import com.clear.solutions.task.infra.controller.mapper.UserViewMapper;
-import com.clear.solutions.task.infra.controller.model.UserView;
+
+import com.bohdan.abramovych.clear_solutions.core.service.UserService;
+import com.bohdan.abramovych.clear_solutions.core.service.model.User;
+import com.bohdan.abramovych.clear_solutions.infra.controller.mapper.UserViewMapper;
+import com.bohdan.abramovych.clear_solutions.infra.controller.model.UserView;
+import jakarta.websocket.server.PathParam;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.NotImplementedException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
 @RestController
+@RequestMapping("/users")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
@@ -25,14 +25,14 @@ public class UserController {
     UserService userService;
     UserViewMapper userViewMapper;
 
-    @GetMapping("/users/")
-    public List<UserView> users() {
-        //TODO implement users.
-        throw new NotImplementedException("users is not yet implemented");
+    @GetMapping("/{from}/{to}")
+    public List<UserView> users(@PathVariable("from") LocalDate from, @PathVariable("to") LocalDate to) {
+        log.debug("Getting users by birthday range ({}-{})", from, to);
+        return userViewMapper.toUserViews(userService.findByBirthdayRange(from, to));
     }
 
-    @PostMapping("/users/")
-    public UserView createUser(UserView userView) {
+    @PostMapping
+    public UserView createUser(@RequestBody UserView userView) {
         log.debug("Creating user by params {}...", userView);
 
         User user = userService.store(userViewMapper.toUser(userView));
@@ -41,7 +41,16 @@ public class UserController {
         return userViewMapper.toUserView(user);
     }
 
-    @GetMapping("/users/{userId}")
+    @DeleteMapping("/{userId}")
+    public UserView deleteUser(@PathVariable String userId) {
+
+        User user = userService.remove(userId);
+        UserView userView = userViewMapper.toUserView(user);
+        log.info("Delete user {}.", userView);
+        return userView;
+    }
+
+    @GetMapping("/{userId}")
     public UserView user(@PathVariable String userId) {
         log.debug("Getting user by id {}...", userId);
 
@@ -50,6 +59,4 @@ public class UserController {
         log.info("Got {} user by id {}.", user, userId);
         return userViewMapper.toUserView(user);
     }
-
-
 }

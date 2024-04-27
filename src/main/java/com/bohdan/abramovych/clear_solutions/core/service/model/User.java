@@ -1,4 +1,4 @@
-package com.clear.solutions.task.core.service.model;
+package com.bohdan.abramovych.clear_solutions.core.service.model;
 
 import lombok.Builder;
 import lombok.NonNull;
@@ -7,7 +7,7 @@ import lombok.Value;
 import java.time.LocalDate;
 
 @Value
-@Builder
+@Builder(toBuilder = true)
 public class User {
 
     String id;

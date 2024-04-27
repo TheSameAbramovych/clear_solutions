@@ -1,12 +1,12 @@
-package com.clear.solutions.task.core.repository.mapper;
+package com.bohdan.abramovych.clear_solutions.core.repository.mapper;
 
-import com.clear.solutions.task.core.repository.model.AddressRecord;
-import com.clear.solutions.task.core.repository.model.UserRecord;
-import com.clear.solutions.task.core.service.model.Address;
-import com.clear.solutions.task.core.service.model.User;
+
+import com.bohdan.abramovych.clear_solutions.core.service.model.Address;
+import com.bohdan.abramovych.clear_solutions.persistence.tables.records.AddressRecord;
 import org.mapstruct.Mapper;
+import org.mapstruct.NullValueCheckStrategy;
 
-@Mapper
+@Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, componentModel = "spring")
 public interface AddressRecordMapper {
 
     AddressRecord toAddressRecord(Address address);

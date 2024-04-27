@@ -1,4 +1,4 @@
-package com.baybut.cocacola.stock.configuration;
+package com.bohdan.abramovych.clear_solutions.configuration;
 
 import org.jooq.conf.Settings;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
